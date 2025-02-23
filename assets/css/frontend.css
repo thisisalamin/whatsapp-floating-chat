@@ -1,0 +1,168 @@
+.whatsapp-chat-container {
+    position: fixed;
+    z-index: 9999;
+}
+
+.whatsapp-chat-container.bottom-right {
+    right: 20px;
+    bottom: 20px;
+}
+
+.whatsapp-chat-container.bottom-left {
+    left: 20px;
+    bottom: 20px;
+}
+
+.whatsapp-chat-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;  /* Increased from 50px to match admin preview */
+    height: 50px; /* Increased from 50px to match admin preview */
+    transition: transform 0.3s ease;
+    transform-origin: center;
+    cursor: pointer;
+}
+
+/* Style 1 - Classic */
+.whatsapp-chat-button.style1 {
+    background-color: transparent; /* Remove background for classic style */
+    box-shadow: none; /* Remove shadow for classic style */
+}
+
+.whatsapp-chat-button.style1 i {
+    font-size: 50px; /* Larger icon for classic style */
+    color: #25D366; /* WhatsApp brand color */
+}
+
+/* Remove Style 2 - Square */
+
+/* Style 3 - Circle */
+.whatsapp-chat-button.style3 {
+    background-color: #25D366;
+    border-radius: 50%;
+    box-shadow: 2px 2px 6px rgba(0,0,0,0.4);
+}
+
+/* Style 4 - Modern */
+.whatsapp-chat-button.style4 {
+    background-color: #25D366;
+    border-radius: 12px;
+    box-shadow: 2px 2px 6px rgba(0,0,0,0.4);
+}
+
+/* Common styles for styles 3 and 4 */
+.whatsapp-chat-button.style3 i,
+.whatsapp-chat-button.style4 i {
+    font-size: 35px;
+    color: white;
+}
+
+/* Hover and active states */
+.whatsapp-chat-button:hover {
+    transform: scale(1.1);
+}
+
+.whatsapp-chat-button.active {
+    transform: scale(0.9);
+}
+
+/* Fix for Font Awesome icons */
+.fab.fa-whatsapp,
+.fab.fa-whatsapp-square {
+    font-family: "Font Awesome 6 Brands" !important;
+    -webkit-font-smoothing: antialiased;
+    display: inline-block;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+    line-height: 1;
+}
+
+/* Add these new styles */
+.whatsapp-popup {
+    position: absolute;
+    bottom: 80px;
+    right: 0;
+    background: #fff;
+    width: 300px;
+    border-radius: 12px;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.15);
+    padding: 20px;
+    display: none;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.3s ease;
+    z-index: 999999;
+}
+
+.whatsapp-popup.active {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.bottom-left .whatsapp-popup {
+    left: 0;
+    right: auto;
+}
+
+.whatsapp-popup h3 {
+    color: #075E54;
+    font-size: 18px;
+    margin: 0 0 15px 0;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #E0E0E0;
+    font-weight: 600;
+    text-align: center;
+}
+
+.whatsapp-option {
+    display: block;
+    padding: 10px;
+    margin: 8px 0;
+    color: #ffffff;
+    text-decoration: none;
+    background: #25D366;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    font-size: 14px;
+}
+
+.whatsapp-option:hover {
+    background: #128C7E;
+    color: #ffffff;
+    transform: translateX(5px);
+}
+
+.whatsapp-popup::before {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    right: 24px;
+    width: 20px;
+    height: 20px;
+    background: #fff;
+    transform: rotate(45deg);
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 480px) {
+    .whatsapp-popup {
+        width: 280px;
+        right: 10px;
+    }
+}
+
+/* Pulse Animation */
+@keyframes whatsapp-pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.5);
+    }
+    70% {
+        box-shadow: 0 0 0 15px rgba(37, 211, 102, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
+    }
+}
