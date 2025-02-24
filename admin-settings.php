@@ -35,14 +35,10 @@ function whatsapp_chat_settings_page() {
 
         // Process inquiry options with proper sanitization
         if (isset($_POST['whatsapp_chat_options'])) {
-            $raw_options = $_POST['whatsapp_chat_options'];
+            $raw_options = array_map('sanitize_text_field', wp_unslash($_POST['whatsapp_chat_options']));
             if (is_array($raw_options)) {
-                $sanitized_options = array();
-                foreach ($raw_options as $option) {
-                    if (!empty($option)) {
-                        $sanitized_options[] = sanitize_text_field(wp_unslash($option));
-                    }
-                }
+                $sanitized_options = array_map('sanitize_text_field', $raw_options);
+                $sanitized_options = array_filter($sanitized_options); // Remove empty values
                 update_option('whatsapp_chat_options', $sanitized_options);
                 $settings_updated = true;
             }
