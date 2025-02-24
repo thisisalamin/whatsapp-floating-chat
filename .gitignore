@@ -1,16 +1,3 @@
-# Ignore everything
-*
-
-# But not these files...
-!.gitignore
-!*.php
-!*.css
-!*.js
-!*.html
-!*.md
-!*.txt
-!*.json
-
 # Ignore specific files and directories
 .DS_Store
 Thumbs.db
