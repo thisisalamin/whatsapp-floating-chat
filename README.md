@@ -1,10 +1,22 @@
-# WhatsApp Floating Chat
+=== Easy Chat Widget ===
+Contributors: alamin
+Tags: chat, whatsapp, messaging, contact
+Requires at least: 5.0
+Tested up to: 6.3
+Stable tag: 1.0.0
+Requires PHP: 7.2
+License: GPLv2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-A WordPress plugin that adds a fully customizable floating WhatsApp chat icon with inquiry options, animations, and analytics.
+A WordPress plugin that adds a fully customizable floating chat icon with inquiry options, animations, and analytics.
 
-## Features
+== Description ==
 
-- Customizable WhatsApp floating button
+Easy Chat Widget adds a floating chat button to your WordPress site with customizable options and analytics.
+
+= Features =
+
+- Customizable floating chat button
 - Multiple button positions (bottom-right, bottom-left, etc.)
 - Different icon styles
 - Pre-defined inquiry options
@@ -12,50 +24,66 @@ A WordPress plugin that adds a fully customizable floating WhatsApp chat icon wi
 - Mobile-friendly design
 - Font Awesome integration
 
-## Installation
+== Installation ==
 
-1. Upload the `whatsapp-chat` folder to your `/wp-content/plugins/` directory
+1. Upload the plugin folder to your `/wp-content/plugins/` directory
 2. Activate the plugin through the 'Plugins' menu in WordPress
-3. Go to WhatsApp Chat settings to configure your WhatsApp number and preferences
+3. Go to Easy Chat settings to configure your number and preferences
 
-## Configuration
+== Configuration ==
 
-### Basic Settings
-1. Navigate to WhatsApp Chat settings in your WordPress admin panel
-2. Enter your WhatsApp number (with country code)
+= Basic Settings =
+1. Navigate to Easy Chat settings in your WordPress admin panel
+2. Enter your messaging number (with country code)
 3. Choose button position and style
 4. Add inquiry options (optional)
 5. Enable/disable click tracking
 
-### Inquiry Options
-Add pre-defined messages that users can choose from when they click the WhatsApp icon. Each option will open WhatsApp with a pre-filled message.
+= Inquiry Options =
+Add pre-defined messages that users can choose from when they click the chat icon.
 
-## Analytics
+== Frequently Asked Questions ==
 
-Track how users interact with your WhatsApp chat button:
-- Number of clicks
-- Most popular inquiry options
-- Click timestamps
-- Basic user information
+= What messaging apps are supported? =
+Currently, the plugin supports WhatsApp messaging.
 
-## Developer Notes
+= Is it mobile-friendly? =
+Yes, the chat widget is fully responsive and works great on mobile devices.
 
-### Hooks and Filters
+== Screenshots ==
+
+1. Chat widget on frontend
+2. Admin settings page
+3. Analytics dashboard
+
+== Changelog ==
+
+= 1.0.0 =
+* Initial release
+
+== Upgrade Notice ==
+
+= 1.0.0 =
+Initial release of Easy Chat Widget.
+
+== Developer Notes ==
+
+= Hooks and Filters =
 The plugin provides several hooks for customization:
-- `whatsapp_chat_number`
-- `whatsapp_chat_position`
-- `whatsapp_chat_options`
+- `chat_number`
+- `chat_position`
+- `chat_options`
 
-### CSS Classes
+= CSS Classes =
 Main styling classes:
-- `.whatsapp-chat-container`
-- `.whatsapp-chat-button`
-- `.whatsapp-popup`
-- `.whatsapp-option`
+- `.chat-container`
+- `.chat-button`
+- `.chat-popup`
+- `.chat-option`
 
 ## Support
 
-For support, please visit https://crafely.com/whatsapp-floating-chat/
+For support, please visit https://crafely.com/easy-chat-widget/
 
 ## License
 

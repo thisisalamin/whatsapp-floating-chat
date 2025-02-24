@@ -1,41 +1,41 @@
 <?php
 /**
- * Plugin Name: WhatsApp Floating Chat
- * Plugin URI:  https://crafely.com/whatsapp-floating-chat/
- * Description: A fully customizable floating WhatsApp chat icon with inquiry options, animations, and analytics.
+ * Plugin Name: Easy Chat Widget
+ * Plugin URI:  https://crafely.com/easy-chat-widget/
+ * Description: A fully customizable floating chat icon with inquiry options, animations, and analytics.
  * Version:     1.0
  * Author:      Mohamed Alamin
  * Author URI:  https://crafely.com/
  * License:     GPL2
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain: whatsapp-chat
+ * Text Domain: easy-chat
  * Domain Path: /languages
  */
 
 if (!defined('ABSPATH')) exit;
 
 // Define plugin version constant
-define('WHATSAPP_CHAT_VERSION', '1.0');
+define('EASY_CHAT_VERSION', '1.0');
 
 // Load Assets
 function whatsapp_chat_enqueue_assets() {
     wp_enqueue_style('font-awesome', plugin_dir_url(__FILE__) . 'assets/css/all.min.css', array(), '6.4.0');
     wp_enqueue_style(
-        'whatsapp-chat-style', 
+        'easy-chat-style', 
         plugin_dir_url(__FILE__) . 'assets/css/frontend.css',
         array(),
         filemtime(plugin_dir_path(__FILE__) . 'assets/css/frontend.css')
     );
     wp_enqueue_script(
-        'whatsapp-chat-script', 
+        'easy-chat-script', 
         plugin_dir_url(__FILE__) . 'assets/js/script.js', 
         array('jquery'),
         filemtime(plugin_dir_path(__FILE__) . 'assets/js/script.js'),
         true
     );
 
-    wp_localize_script('whatsapp-chat-script', 'whatsappChatData', array(
-        'whatsappNumber' => get_option('whatsapp_chat_number', ''),
+    wp_localize_script('easy-chat-script', 'easyChatData', array(
+        'phoneNumber' => get_option('whatsapp_chat_number', ''),
         'inquiryOptions' => get_option('whatsapp_chat_options', array()),
         'trackingEnabled' => get_option('whatsapp_chat_tracking', 'no')
     ));

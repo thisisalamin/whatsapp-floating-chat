@@ -2,7 +2,7 @@
 
 // Admin Menu
 function whatsapp_chat_menu() {
-    add_options_page('WhatsApp Chat Settings', 'WhatsApp Chat', 'manage_options', 'whatsapp-chat-settings', 'whatsapp_chat_settings_page');
+    add_options_page('Easy Chat Widget Settings', 'Easy Chat', 'manage_options', 'easy-chat-settings', 'whatsapp_chat_settings_page');
 }
 add_action('admin_menu', 'whatsapp_chat_menu');
 
@@ -12,8 +12,15 @@ function whatsapp_chat_settings_page() {
 
     // Process form submission
     if (isset($_POST['whatsapp_chat_save'])) {
-        // Verify nonce
-        if (!isset($_POST['whatsapp_chat_nonce']) || !wp_verify_nonce($_POST['whatsapp_chat_nonce'], 'whatsapp_chat_settings')) {
+        // Verify nonce with proper sanitization
+        if (!isset($_POST['whatsapp_chat_nonce']) || 
+            !wp_verify_nonce(
+                sanitize_text_field(
+                    wp_unslash($_POST['whatsapp_chat_nonce'])
+                ), 
+                'whatsapp_chat_settings'
+            )
+        ) {
             wp_die('Invalid nonce specified', 'Error', array('response' => 403));
         }
 
@@ -26,13 +33,14 @@ function whatsapp_chat_settings_page() {
             $settings_updated = true;
         }
 
-        // Process inquiry options
-        if (isset($_POST['whatsapp_chat_options']) && is_array($_POST['whatsapp_chat_options'])) {
-            $options = array_map(function($option) {
-                return sanitize_text_field(wp_unslash($option));
-            }, $_POST['whatsapp_chat_options']);
-            update_option('whatsapp_chat_options', $options);
-            $settings_updated = true;
+        // Process inquiry options with proper sanitization
+        if (isset($_POST['whatsapp_chat_options'])) {
+            $raw_options = wp_unslash($_POST['whatsapp_chat_options']);
+            if (is_array($raw_options)) {
+                $options = array_map('sanitize_text_field', $raw_options);
+                update_option('whatsapp_chat_options', $options);
+                $settings_updated = true;
+            }
         }
 
         // Process position
@@ -76,7 +84,7 @@ function whatsapp_chat_settings_page() {
     <div class="wrap">
         <div class="max-w-3xl mx-auto py-8">
             <div class="flex items-center justify-between mb-8">
-                <h2 class="text-3xl font-bold text-gray-800">WhatsApp Chat</h2>
+                <h2 class="text-3xl font-bold text-gray-800">Easy Chat Widget</h2>
                 <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm">Version 1.0</span>
             </div>
             
@@ -190,7 +198,7 @@ function whatsapp_chat_settings_page() {
         function addInquiryField() {
             const container = document.getElementById('inquiry-options');
             const div = document.createElement('div');
-            div.className = 'flex items-center space-x-2 p-2 border rounded-lg bg-gray-50';
+            div.className = 'flex items-center space-x-2 p-2 rounded-lg bg-gray-50';
             div.innerHTML = `
                 <input type="text" 
                        name="whatsapp_chat_options[]" 
@@ -199,7 +207,7 @@ function whatsapp_chat_settings_page() {
                        required>
                 <button type="button" 
                         onclick="removeInquiryField(this)"
-                        class="inline-flex items-center p-2 border border-transparent rounded-md text-red-600 hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                        class="inline-flex items-center p-2 border-transparent rounded-md text-red-600 hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
                     <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                     </svg>
