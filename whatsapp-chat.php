@@ -14,11 +14,25 @@
 
 if (!defined('ABSPATH')) exit;
 
+// Define plugin version constant
+define('WHATSAPP_CHAT_VERSION', '1.0');
+
 // Load Assets
 function whatsapp_chat_enqueue_assets() {
     wp_enqueue_style('font-awesome', plugin_dir_url(__FILE__) . 'assets/css/all.min.css', array(), '6.4.0');
-    wp_enqueue_style('whatsapp-chat-style', plugin_dir_url(__FILE__) . 'assets/css/frontend.css');
-    wp_enqueue_script('whatsapp-chat-script', plugin_dir_url(__FILE__) . 'assets/js/script.js', array('jquery'), null, true);
+    wp_enqueue_style(
+        'whatsapp-chat-style', 
+        plugin_dir_url(__FILE__) . 'assets/css/frontend.css',
+        array(),
+        filemtime(plugin_dir_path(__FILE__) . 'assets/css/frontend.css')
+    );
+    wp_enqueue_script(
+        'whatsapp-chat-script', 
+        plugin_dir_url(__FILE__) . 'assets/js/script.js', 
+        array('jquery'),
+        filemtime(plugin_dir_path(__FILE__) . 'assets/js/script.js'),
+        true
+    );
 
     wp_localize_script('whatsapp-chat-script', 'whatsappChatData', array(
         'whatsappNumber' => get_option('whatsapp_chat_number', ''),
@@ -30,8 +44,18 @@ add_action('wp_enqueue_scripts', 'whatsapp_chat_enqueue_assets');
 
 // Load Admin Assets
 function whatsapp_chat_enqueue_admin_assets() {
-    wp_enqueue_style('fontawesome', plugin_dir_url(__FILE__) . 'assets/css/all.min.css');
-    wp_enqueue_style('whatsapp-tailwind-style', plugin_dir_url(__FILE__) . 'assets/css/output.css');
+    wp_enqueue_style(
+        'fontawesome', 
+        plugin_dir_url(__FILE__) . 'assets/css/all.min.css',
+        array(),
+        '6.4.0'
+    );
+    wp_enqueue_style(
+        'whatsapp-tailwind-style', 
+        plugin_dir_url(__FILE__) . 'assets/css/output.css',
+        array(),
+        filemtime(plugin_dir_path(__FILE__) . 'assets/css/output.css')
+    );
 }
 add_action('admin_enqueue_scripts', 'whatsapp_chat_enqueue_admin_assets');
 

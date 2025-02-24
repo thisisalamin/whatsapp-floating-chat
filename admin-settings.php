@@ -10,20 +10,67 @@ add_action('admin_menu', 'whatsapp_chat_menu');
 function whatsapp_chat_settings_page() {
     if (!current_user_can('manage_options')) return;
 
+    // Process form submission
     if (isset($_POST['whatsapp_chat_save'])) {
-        update_option('whatsapp_chat_number', sanitize_text_field($_POST['whatsapp_chat_number']));
-        update_option('whatsapp_chat_options', array_map('sanitize_text_field', $_POST['whatsapp_chat_options']));
-        update_option('whatsapp_chat_position', sanitize_text_field($_POST['whatsapp_chat_position']));
-        update_option('whatsapp_chat_icon_style', sanitize_text_field($_POST['whatsapp_chat_icon_style']));
-        update_option('whatsapp_chat_tracking', sanitize_text_field($_POST['whatsapp_chat_tracking']));
-        echo '<div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
-                <span class="block sm:inline">Settings saved successfully!</span>
-              </div>';
+        // Verify nonce
+        if (!isset($_POST['whatsapp_chat_nonce']) || !wp_verify_nonce($_POST['whatsapp_chat_nonce'], 'whatsapp_chat_settings')) {
+            wp_die('Invalid nonce specified', 'Error', array('response' => 403));
+        }
+
+        // Safely process and update options
+        $settings_updated = false;
+
+        // Process WhatsApp number
+        if (isset($_POST['whatsapp_chat_number'])) {
+            update_option('whatsapp_chat_number', sanitize_text_field(wp_unslash($_POST['whatsapp_chat_number'])));
+            $settings_updated = true;
+        }
+
+        // Process inquiry options
+        if (isset($_POST['whatsapp_chat_options']) && is_array($_POST['whatsapp_chat_options'])) {
+            $options = array_map(function($option) {
+                return sanitize_text_field(wp_unslash($option));
+            }, $_POST['whatsapp_chat_options']);
+            update_option('whatsapp_chat_options', $options);
+            $settings_updated = true;
+        }
+
+        // Process position
+        if (isset($_POST['whatsapp_chat_position'])) {
+            update_option('whatsapp_chat_position', sanitize_text_field(wp_unslash($_POST['whatsapp_chat_position'])));
+            $settings_updated = true;
+        }
+
+        // Process icon style
+        if (isset($_POST['whatsapp_chat_icon_style'])) {
+            update_option('whatsapp_chat_icon_style', sanitize_text_field(wp_unslash($_POST['whatsapp_chat_icon_style'])));
+            $settings_updated = true;
+        }
+
+        // Process tracking
+        if (isset($_POST['whatsapp_chat_tracking'])) {
+            update_option('whatsapp_chat_tracking', sanitize_text_field(wp_unslash($_POST['whatsapp_chat_tracking'])));
+            $settings_updated = true;
+        }
+
+        // Show success message if any setting was updated
+        if ($settings_updated) {
+            add_settings_error(
+                'whatsapp_chat_messages',
+                'whatsapp_chat_message',
+                __('Settings Saved', 'whatsapp-chat'),
+                'updated'
+            );
+        }
     }
 
+    // Get saved options
     $whatsapp_number = get_option('whatsapp_chat_number', '');
     $inquiry_options = get_option('whatsapp_chat_options', array());
     $selected_icon = get_option('whatsapp_chat_icon_style', 'style1');
+
+    // Show settings errors/messages
+    settings_errors('whatsapp_chat_messages');
     ?>
     
     <div class="wrap">
@@ -34,6 +81,7 @@ function whatsapp_chat_settings_page() {
             </div>
             
             <form method="post" class="space-y-6">
+                <?php wp_nonce_field('whatsapp_chat_settings', 'whatsapp_chat_nonce'); ?>
                 <!-- Settings Card: Basic -->
                 <div class="bg-white rounded-lg shadow-md p-6">
                     <h3 class="text-xl font-semibold mb-4 text-gray-700">Basic Settings</h3>
