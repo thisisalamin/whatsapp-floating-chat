@@ -8,7 +8,7 @@
  * Author URI:  https://crafely.com/
  * License:     GPL2
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain: easy-chat
+ * Text Domain: easy-chat-widget
  * Domain Path: /languages
  */
 
