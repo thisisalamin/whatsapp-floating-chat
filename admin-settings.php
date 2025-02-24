@@ -66,7 +66,7 @@ function whatsapp_chat_settings_page() {
             add_settings_error(
                 'whatsapp_chat_messages',
                 'whatsapp_chat_message',
-                __('Settings Saved', 'whatsapp-chat'),
+                __('Settings Saved', 'easy-chat-widget'),
                 'updated'
             );
         }
