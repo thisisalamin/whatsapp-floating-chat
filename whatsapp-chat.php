@@ -16,7 +16,7 @@ if (!defined('ABSPATH')) exit;
 
 // Load Assets
 function whatsapp_chat_enqueue_assets() {
-    wp_enqueue_style('font-awesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css', array(), '6.4.0');
+    wp_enqueue_style('font-awesome', plugin_dir_url(__FILE__) . 'assets/css/all.min.css', array(), '6.4.0');
     wp_enqueue_style('whatsapp-chat-style', plugin_dir_url(__FILE__) . 'assets/css/frontend.css');
     wp_enqueue_script('whatsapp-chat-script', plugin_dir_url(__FILE__) . 'assets/js/script.js', array('jquery'), null, true);
 
@@ -28,8 +28,12 @@ function whatsapp_chat_enqueue_assets() {
 }
 add_action('wp_enqueue_scripts', 'whatsapp_chat_enqueue_assets');
 
-// Remove duplicate enqueue function
-// remove: whatsapp_chat_enqueue_scripts()
+// Load Admin Assets
+function whatsapp_chat_enqueue_admin_assets() {
+    wp_enqueue_style('fontawesome', plugin_dir_url(__FILE__) . 'assets/css/all.min.css');
+    wp_enqueue_style('whatsapp-tailwind-style', plugin_dir_url(__FILE__) . 'assets/css/output.css');
+}
+add_action('admin_enqueue_scripts', 'whatsapp_chat_enqueue_admin_assets');
 
 // Include Admin Settings & Analytics
 include_once plugin_dir_path(__FILE__) . 'admin-settings.php';

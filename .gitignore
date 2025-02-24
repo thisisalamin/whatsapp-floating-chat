@@ -1,0 +1,33 @@
+# Ignore everything
+*
+
+# But not these files...
+!.gitignore
+!*.php
+!*.css
+!*.js
+!*.html
+!*.md
+!*.txt
+!*.json
+
+# Ignore specific files and directories
+.DS_Store
+Thumbs.db
+node_modules/
+vendor/
+.idea/
+.vscode/
+*.log
+*.cache
+*.bak
+*.swp
+*.tmp
+*.dist
+*.zip
+*.tar.gz
+*.rar
+*.7z
+
+package-lock.json
+package.json

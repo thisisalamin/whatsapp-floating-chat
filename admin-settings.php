@@ -25,10 +25,6 @@ function whatsapp_chat_settings_page() {
     $inquiry_options = get_option('whatsapp_chat_options', array());
     $selected_icon = get_option('whatsapp_chat_icon_style', 'style1');
     ?>
-    <!-- Add Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Add Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <div class="wrap">
         <div class="max-w-3xl mx-auto py-8">
@@ -59,14 +55,14 @@ function whatsapp_chat_settings_page() {
                         <div class="space-y-2">
                             <label class="text-sm font-medium text-gray-700">Button Position</label>
                             <div class="grid grid-cols-2 gap-4">
-                                <label class="relative flex border rounded-lg p-4 cursor-pointer hover:bg-gray-50">
+                                <label class="relative flex rounded-lg p-4 cursor-pointer hover:bg-gray-50">
                                     <input type="radio" name="whatsapp_chat_position" value="bottom-right" <?php checked(get_option('whatsapp_chat_position'), 'bottom-right'); ?> class="sr-only peer">
                                     <div class="flex items-center">
                                         <div class="text-sm">Bottom Right</div>
                                     </div>
                                     <div class="absolute inset-0 rounded-lg border-2 peer-checked:border-indigo-500 pointer-events-none"></div>
                                 </label>
-                                <label class="relative flex border rounded-lg p-4 cursor-pointer hover:bg-gray-50">
+                                <label class="relative flex rounded-lg p-4 cursor-pointer hover:bg-gray-50">
                                     <input type="radio" name="whatsapp_chat_position" value="bottom-left" <?php checked(get_option('whatsapp_chat_position'), 'bottom-left'); ?> class="sr-only peer">
                                     <div class="flex items-center">
                                         <div class="text-sm">Bottom Left</div>
@@ -114,7 +110,7 @@ function whatsapp_chat_settings_page() {
                     </div>
                     <div id="inquiry-options" class="space-y-3">
                         <?php foreach ($inquiry_options as $option) : ?>
-                            <div class="flex items-center space-x-2 p-2 border rounded-lg bg-gray-50">
+                            <div class="flex items-center space-x-2 p-2 rounded-lg bg-gray-50">
                                 <input type="text" 
                                        name="whatsapp_chat_options[]" 
                                        value="<?php echo esc_attr($option); ?>"
