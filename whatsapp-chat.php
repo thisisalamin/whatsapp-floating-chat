@@ -78,6 +78,3 @@ function whatsapp_chat_button() {
     }
 }
 add_action('wp_footer', 'whatsapp_chat_button');
-
-// Remove duplicate render function
-// remove: whatsapp_chat_render_button()
