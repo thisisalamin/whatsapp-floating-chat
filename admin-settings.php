@@ -2,7 +2,7 @@
 
 // Admin Menu
 function whatsapp_chat_menu() {
-    add_options_page('Easy Chat Widget Settings', 'Easy Chat', 'manage_options', 'easy-chat-settings', 'whatsapp_chat_settings_page');
+    add_options_page('WhatsApp by FlowFunel.io', 'WhatsApp By FlowFunnel', 'manage_options', 'wa-chat-settings', 'whatsapp_chat_settings_page');
 }
 add_action('admin_menu', 'whatsapp_chat_menu');
 
@@ -85,7 +85,7 @@ function whatsapp_chat_settings_page() {
     <div class="wrap">
         <div class="max-w-3xl mx-auto py-8">
             <div class="flex items-center justify-between mb-8">
-                <h2 class="text-3xl font-bold text-gray-800">Easy Chat Widget</h2>
+                <h2 class="text-3xl font-bold text-gray-800">WhatsApp by FlowFunel</h2>
                 <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm">Version 1.0</span>
             </div>
             
