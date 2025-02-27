@@ -100,7 +100,7 @@ function whatsapp_chat_settings_page() {
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <!-- WhatsApp Number Verification Card -->
                 <div class="lg:col-span-2 bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-                    <h3 class="text-xl font-semibold mb-6 text-gray-700 pb-4 border-b">WhatsApp Number Verification</h3>
+                    <h3 class="text-xl font-semibold mb-6 text-gray-700 pb-4 border-b">WhatsApp Account</h3>
                     <div class="space-y-4">
                         <div class="flex flex-col md:flex-row md:items-end space-y-4 md:space-y-0 md:space-x-4">
                             <div class="flex-grow">
