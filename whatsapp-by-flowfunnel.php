@@ -89,11 +89,13 @@ require_once plugin_dir_path(__FILE__) . 'includes/ajax-handlers.php';
 // Display WhatsApp Button
 function waflowfunnel_chat_button() {
     $number = get_option('whatsapp_chat_number');
-    $position = get_option('whatsapp_chat_position', 'bottom-right');
-    $icon_style = get_option('whatsapp_chat_icon_style', 'style1');
-    $inquiry_options = get_option('whatsapp_chat_options', array());
+    $is_verified = get_option('whatsapp_number_verified', false);
     
-    if (!empty($number)) {
+    // Only show if number exists and is verified
+    if (!empty($number) && $is_verified) {
+        $position = get_option('whatsapp_chat_position', 'bottom-right');
+        $icon_style = get_option('whatsapp_chat_icon_style', 'style1');
+        $inquiry_options = get_option('whatsapp_chat_options', array());
         ?>
         <div class="whatsapp-chat-container <?php echo esc_attr($position); ?>">
             <div class="whatsapp-chat-button <?php echo esc_attr($icon_style); ?>" 
