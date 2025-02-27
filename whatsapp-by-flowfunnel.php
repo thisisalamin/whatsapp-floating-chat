@@ -84,6 +84,7 @@ add_action('admin_enqueue_scripts', 'waflowfunnel_chat_enqueue_admin_assets');
 // Include Admin Settings & Analytics
 include_once plugin_dir_path(__FILE__) . 'includes/admin-settings.php';
 include_once plugin_dir_path(__FILE__) . 'includes/analytics.php';
+require_once plugin_dir_path(__FILE__) . 'includes/ajax-handlers.php';
 
 // Display WhatsApp Button
 function waflowfunnel_chat_button() {
