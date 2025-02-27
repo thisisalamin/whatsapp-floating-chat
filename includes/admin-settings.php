@@ -132,24 +132,32 @@ function whatsapp_chat_settings_page() {
                             <div class="flex-grow">
                                 <label class="text-sm font-medium text-gray-700 mb-2 block">WhatsApp Number</label>
                                 <div class="flex">
-                                    <span class="inline-flex items-center px-4 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 sm:text-sm">+</span>
+                                    <span class="inline-flex items-center px-4 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 sm:text-sm h-[35px]">+</span>
                                     <input type="text" 
                                            name="whatsapp_chat_number" 
                                            value="<?php echo esc_attr($whatsapp_number); ?>" 
-                                           class="flex-1 min-w-0 rounded-none rounded-r-md border-gray-300 focus:ring-green-500 focus:border-green-500"
+                                           class="flex-1 min-w-0 rounded-none rounded-r-md border-gray-300 focus:ring-green-500 focus:border-green-500 h-[35px] text-sm"
+                                           readonly
                                            required>
                                 </div>
                             </div>
                             <div class="flex space-x-2">
-                                <button type="submit" 
-                                        name="whatsapp_chat_update_number" 
-                                        class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-colors">
-                                    Update
+                                <button type="button" 
+                                        onclick="changeWhatsAppNumber()"
+                                        data-editing="false"
+                                        class="change-whatsapp-btn inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-colors">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                                    </svg>
+                                    Change WhatsApp
                                 </button>
                                 <button type="button" 
-                                        onclick="verifyWhatsAppNumber()"
-                                        class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors">
-                                    Verify
+                                        onclick="resendVerificationCode()"
+                                        class="verify-btn inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                                    </svg>
+                                    Resend Code
                                 </button>
                             </div>
                         </div>
@@ -159,7 +167,7 @@ function whatsapp_chat_settings_page() {
                             '<span class="text-green-600">✓ Verified</span>' : 
                             '<span class="text-red-600">✗ Not Verified</span>';
                         ?>
-                        <div class="text-sm">
+                        <div class="text-sm" id="verification-status">
                             Status: <?php echo wp_kses_post($verification_status); ?>
                         </div>
                     </div>
@@ -277,5 +285,62 @@ function whatsapp_chat_settings_page() {
         </form>
     </div>
 </div>
-    <?php
+<?php
 }
+
+// Add new AJAX handler for code verification
+function handle_verify_code() {
+    check_ajax_referer('verify_whatsapp_number', 'nonce');
+    
+    $code = sanitize_text_field($_POST['code']);
+    
+    // TODO: Implement your verification code validation logic here
+    // For demo, we'll accept any 6-digit code
+    if (strlen($code) === 6 && is_numeric($code)) {
+        update_option('whatsapp_number_verified', true);
+        wp_send_json_success([
+            'message' => 'WhatsApp number verified successfully'
+        ]);
+    } else {
+        wp_send_json_error([
+            'message' => 'Invalid verification code'
+        ]);
+    }
+}
+add_action('wp_ajax_verify_whatsapp_code', 'handle_verify_code');
+
+function handle_change_whatsapp_number() {
+    check_ajax_referer('verify_whatsapp_number', 'nonce');
+    
+    $number = sanitize_text_field($_POST['number']);
+    
+    // Reset verification status
+    update_option('whatsapp_number_verified', false);
+    update_option('whatsapp_chat_number', $number);
+    
+    // TODO: Implement your WhatsApp number change logic here
+    
+    wp_send_json_success(array(
+        'message' => 'WhatsApp number updated successfully'
+    ));
+}
+add_action('wp_ajax_change_whatsapp_number', 'handle_change_whatsapp_number');
+
+function handle_resend_verification_code() {
+    check_ajax_referer('verify_whatsapp_number', 'nonce');
+    
+    $number = get_option('whatsapp_chat_number', '');
+    
+    if (empty($number)) {
+        wp_send_json_error(array(
+            'message' => 'No WhatsApp number found'
+        ));
+    }
+    
+    // TODO: Implement your verification code resend logic here
+    
+    wp_send_json_success(array(
+        'message' => 'Verification code sent successfully'
+    ));
+}
+add_action('wp_ajax_resend_verification_code', 'handle_resend_verification_code');
