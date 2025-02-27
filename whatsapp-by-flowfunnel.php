@@ -19,11 +19,13 @@ define('WAFLOWFUNNEL_VERSION', '1.0');
 
 // Load Assets
 function waflowfunnel_chat_enqueue_assets() {
-    wp_enqueue_style('font-awesome', plugin_dir_url(__FILE__) . 'assets/css/all.min.css', array(), '6.4.0');
+    // Load Font Awesome from CDN to ensure it works
+    wp_enqueue_style('font-awesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css', array(), '6.4.0');
+    
     wp_enqueue_style(
         'waflowfunnel-style', 
         plugin_dir_url(__FILE__) . 'assets/css/frontend.css',
-        array(),
+        array('font-awesome'), // Make it dependent on Font Awesome
         filemtime(plugin_dir_path(__FILE__) . 'assets/css/frontend.css')
     );
     wp_enqueue_script(
@@ -65,37 +67,26 @@ include_once plugin_dir_path(__FILE__) . 'includes/analytics.php';
 
 // Display WhatsApp Button
 function waflowfunnel_chat_button() {
-    $number = get_option('waflowfunnel_chat_number');
-    $position = get_option('waflowfunnel_chat_position', 'bottom-right');
-    $icon_style = get_option('waflowfunnel_chat_icon_style', 'style1');
-    $inquiry_options = get_option('waflowfunnel_chat_options', array());
+    $number = get_option('whatsapp_chat_number'); // Changed from waflowfunnel_chat_number
+    $position = get_option('whatsapp_chat_position', 'bottom-right');
+    $icon_style = get_option('whatsapp_chat_icon_style', 'style1');
+    $inquiry_options = get_option('whatsapp_chat_options', array());
     
     if (!empty($number)) {
         ?>
-        <div class="waflowfunnel-chat-container <?php echo esc_attr($position); ?>">
-            <div class="waflowfunnel-chat-button <?php echo esc_attr($icon_style); ?>" 
-                 onclick="toggleWaflowfunnelPopup()">
-                <?php
-                switch ($icon_style) {
-                    case 'style3':
-                        echo '<i class="fab fa-whatsapp"></i>';
-                        break;
-                    case 'style4':
-                        echo '<i class="fab fa-whatsapp"></i>';
-                        break;
-                    default: // style1
-                        echo '<i class="fab fa-whatsapp"></i>';
-                }
-                ?>
+        <div class="whatsapp-chat-container <?php echo esc_attr($position); ?>">
+            <div class="whatsapp-chat-button <?php echo esc_attr($icon_style); ?>" 
+                 onclick="toggleWhatsAppPopup()">
+                <i class="fab fa-whatsapp"></i>
             </div>
             <?php if (!empty($inquiry_options)): ?>
-            <div class="waflowfunnel-popup">
+            <div class="whatsapp-popup" id="whatsapp-popup">
                 <h3>How can we help?</h3>
                 <?php foreach ($inquiry_options as $option): ?>
-                    <a href="https://wa.me/<?php echo esc_attr($number); ?>?text=<?php echo urlencode("Hello, I'm interested in $option."); ?>" 
+                    <a href="https://wa.me/<?php echo esc_attr($number); ?>?text=<?php echo urlencode($option); ?>" 
                        target="_blank" 
-                       class="waflowfunnel-option" 
-                       onclick="trackWaflowfunnelClick('<?php echo esc_js($option); ?>')">
+                       class="whatsapp-option" 
+                       onclick="trackWhatsAppClick('<?php echo esc_js($option); ?>')">
                         <?php echo esc_html($option); ?>
                     </a>
                 <?php endforeach; ?>
