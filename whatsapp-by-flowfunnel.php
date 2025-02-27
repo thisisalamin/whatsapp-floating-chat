@@ -87,7 +87,7 @@ include_once plugin_dir_path(__FILE__) . 'includes/analytics.php';
 
 // Display WhatsApp Button
 function waflowfunnel_chat_button() {
-    $number = get_option('whatsapp_chat_number'); // Changed from waflowfunnel_chat_number
+    $number = get_option('whatsapp_chat_number');
     $position = get_option('whatsapp_chat_position', 'bottom-right');
     $icon_style = get_option('whatsapp_chat_icon_style', 'style1');
     $inquiry_options = get_option('whatsapp_chat_options', array());
@@ -97,19 +97,29 @@ function waflowfunnel_chat_button() {
         <div class="whatsapp-chat-container <?php echo esc_attr($position); ?>">
             <div class="whatsapp-chat-button <?php echo esc_attr($icon_style); ?>" 
                  onclick="toggleWhatsAppPopup()">
-                <i class="fab fa-whatsapp fa-2x"></i> <!-- Added fa-2x for larger icon -->
+                <i class="fab fa-whatsapp text-white"></i>
             </div>
             <?php if (!empty($inquiry_options)): ?>
-            <div class="whatsapp-popup" id="whatsapp-popup">
-                <h3>How can we help?</h3>
-                <?php foreach ($inquiry_options as $option): ?>
-                    <a href="https://wa.me/<?php echo esc_attr($number); ?>?text=<?php echo urlencode($option); ?>" 
-                       target="_blank" 
-                       class="whatsapp-option" 
-                       onclick="trackWhatsAppClick('<?php echo esc_js($option); ?>')">
-                        <?php echo esc_html($option); ?>
-                    </a>
-                <?php endforeach; ?>
+            <div class="whatsapp-popup hidden" id="whatsapp-popup">
+                <div class="popup-content">
+                    <div class="popup-header">
+                        <div class="header-icon">
+                            <i class="fab fa-whatsapp"></i>
+                        </div>
+                        <h3>How can we help?</h3>
+                    </div>
+                    <div class="popup-options">
+                        <?php foreach ($inquiry_options as $option): ?>
+                            <a href="https://wa.me/<?php echo esc_attr($number); ?>?text=<?php echo urlencode($option); ?>" 
+                               target="_blank" 
+                               class="chat-option" 
+                               onclick="trackWhatsAppClick('<?php echo esc_js($option); ?>')">
+                                <span class="option-text"><?php echo esc_html($option); ?></span>
+                                <i class="fas fa-chevron-right"></i>
+                            </a>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
             </div>
             <?php endif; ?>
         </div>
