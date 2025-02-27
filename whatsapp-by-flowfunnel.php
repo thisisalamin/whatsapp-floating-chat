@@ -19,15 +19,30 @@ define('WAFLOWFUNNEL_VERSION', '1.0');
 
 // Load Assets
 function waflowfunnel_chat_enqueue_assets() {
-    // Load Font Awesome from CDN to ensure it works
-    wp_enqueue_style('font-awesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css', array(), '6.4.0');
+    // Load Font Awesome with higher priority
+    wp_enqueue_style(
+        'font-awesome', 
+        plugin_dir_url(__FILE__) . 'assets/css/all.min.css',
+        array(),
+        '6.4.0',
+        'all'
+    );
     
+    wp_enqueue_style(
+        'whatsapp-tailwind-style', 
+        plugin_dir_url(__FILE__) . 'assets/css/style.css',
+        array('font-awesome'), // Make it dependent on Font Awesome
+        filemtime(plugin_dir_path(__FILE__) . 'assets/css/style.css')
+    );
+
     wp_enqueue_style(
         'waflowfunnel-style', 
         plugin_dir_url(__FILE__) . 'assets/css/frontend.css',
-        array('font-awesome'), // Make it dependent on Font Awesome
+        array('font-awesome', 'whatsapp-tailwind-style'), // Update dependencies
         filemtime(plugin_dir_path(__FILE__) . 'assets/css/frontend.css')
     );
+
+    // Remove Font Awesome JS as it's not needed
     wp_enqueue_script(
         'waflowfunnel-script', 
         plugin_dir_url(__FILE__) . 'assets/js/script.js', 
@@ -35,6 +50,9 @@ function waflowfunnel_chat_enqueue_assets() {
         filemtime(plugin_dir_path(__FILE__) . 'assets/js/script.js'),
         true
     );
+
+    // Remove this line as we don't need Font Awesome JS
+    // wp_enqueue_script('waflowfunnel-fontscript' ...);
 
     wp_localize_script('waflowfunnel-script', 'waflowfunnelData', array(
         'phoneNumber' => get_option('waflowfunnel_chat_number', ''),
@@ -47,16 +65,18 @@ add_action('wp_enqueue_scripts', 'waflowfunnel_chat_enqueue_assets');
 // Load Admin Assets
 function waflowfunnel_chat_enqueue_admin_assets() {
     wp_enqueue_style(
-        'fontawesome', 
+        'font-awesome', 
         plugin_dir_url(__FILE__) . 'assets/css/all.min.css',
         array(),
-        '6.4.0'
+        '6.4.0',
+        'all'
     );
+    
     wp_enqueue_style(
         'whatsapp-tailwind-style', 
-        plugin_dir_url(__FILE__) . 'assets/css/output.css',
-        array(),
-        filemtime(plugin_dir_path(__FILE__) . 'assets/css/output.css')
+        plugin_dir_url(__FILE__) . 'assets/css/style.css',
+        array('font-awesome'),
+        filemtime(plugin_dir_path(__FILE__) . 'assets/css/style.css')
     );
 }
 add_action('admin_enqueue_scripts', 'waflowfunnel_chat_enqueue_admin_assets');
@@ -77,7 +97,7 @@ function waflowfunnel_chat_button() {
         <div class="whatsapp-chat-container <?php echo esc_attr($position); ?>">
             <div class="whatsapp-chat-button <?php echo esc_attr($icon_style); ?>" 
                  onclick="toggleWhatsAppPopup()">
-                <i class="fab fa-whatsapp"></i>
+                <i class="fab fa-whatsapp fa-2x"></i> <!-- Added fa-2x for larger icon -->
             </div>
             <?php if (!empty($inquiry_options)): ?>
             <div class="whatsapp-popup" id="whatsapp-popup">
