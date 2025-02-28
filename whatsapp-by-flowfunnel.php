@@ -122,6 +122,11 @@ function waflowfunnel_chat_button() {
                             </a>
                         <?php endforeach; ?>
                     </div>
+                    <div class="whatsapp-brand-name">
+                        <a  href="https://flowfunnel.io" target="_blank">
+                            by FlowFunnel.io
+                        </a>
+                    </div>
                 </div>
             </div>
             <?php endif; ?>

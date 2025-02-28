@@ -157,3 +157,32 @@
 .hidden {
     display: none;
 }
+
+.whatsapp-brand-name {
+    padding: 8px;
+    font-size: 12px;
+    text-align: center;
+    border-top: 1px solid #eee;
+    background: #f9f9f9;
+}
+
+.whatsapp-brand-name a {
+    color: #666;
+    text-decoration: none;
+    transition: color 0.2s ease;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+}
+
+.whatsapp-brand-name a:hover {
+    color: #333;
+}
+
+/* Remove these classes as they're no longer needed */
+.whatsapp-chat-wrapper {
+    display: flex;
+}
+
+.bottom-right .whatsapp-chat-wrapper,
+.bottom-left .whatsapp-chat-wrapper {
+    align-items: initial;
+}
