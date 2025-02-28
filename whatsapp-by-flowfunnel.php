@@ -94,16 +94,14 @@ function waflowfunnel_chat_button() {
     $number = get_option('whatsapp_chat_number');
     $is_verified = get_option('whatsapp_number_verified', false);
     
-    // Only show if number exists and is verified
     if (!empty($number) && $is_verified) {
         $position = get_option('whatsapp_chat_position', 'bottom-right');
         $icon_style = get_option('whatsapp_chat_icon_style', 'style1');
         $inquiry_options = get_option('whatsapp_chat_options', array());
         ?>
         <div class="whatsapp-chat-container <?php echo esc_attr($position); ?>">
-            <div class="whatsapp-chat-button <?php echo esc_attr($icon_style); ?>" 
-                 onclick="toggleWhatsAppPopup()">
-                <i class="fab fa-whatsapp text-white"></i>
+            <div class="whatsapp-chat-button <?php echo esc_attr($icon_style); ?>" onclick="toggleWhatsAppPopup()">
+                <i class="fab fa-whatsapp"></i>
             </div>
             <?php if (!empty($inquiry_options)): ?>
             <div class="whatsapp-popup hidden" id="whatsapp-popup">

@@ -28,6 +28,15 @@ document.addEventListener('DOMContentLoaded', function() {
     const styleOptions = document.querySelectorAll('.style-option');
     const hiddenInput = document.getElementById('selected_style');
 
+    // Set initial selected style
+    styleOptions.forEach(option => {
+        if (option.dataset.style === hiddenInput.value) {
+            option.classList.remove('border-gray-200');
+            option.classList.add('border-indigo-500', 'bg-indigo-50');
+        }
+    });
+
+    // Handle style selection
     styleOptions.forEach(option => {
         option.addEventListener('click', function() {
             // Remove active class from all options
