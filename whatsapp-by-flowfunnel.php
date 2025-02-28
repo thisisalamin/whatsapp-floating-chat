@@ -63,7 +63,10 @@ function waflowfunnel_chat_enqueue_assets() {
 add_action('wp_enqueue_scripts', 'waflowfunnel_chat_enqueue_assets');
 
 // Load Admin Assets
-function waflowfunnel_chat_enqueue_admin_assets() {
+function waflowfunnel_chat_enqueue_admin_assets($hook) {
+    if ($hook !== 'settings_page_wa-chat-settings') {
+        return;
+    }
     wp_enqueue_style(
         'font-awesome', 
         plugin_dir_url(__FILE__) . 'assets/css/all.min.css',
