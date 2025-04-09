@@ -90,12 +90,34 @@ function whatsapp_chat_settings_page() {
 
         // Show success message if any setting was updated
         if ($settings_updated) {
-            add_settings_error(
-                'whatsapp_chat_messages',
-                'whatsapp_chat_message',
-                __('Settings Saved', 'easy-chat-widget'),
-                'updated'
-            );
+            echo '<div id="toast-success" class="fixed bottom-5 left-1/2 -translate-x-1/2 z-50 transform transition-all duration-300 opacity-0 translate-y-full">
+                <div class="flex items-center w-full max-w-xs p-4 mb-4 text-gray-500 bg-white rounded-lg shadow-lg" role="alert">
+                    <div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-green-500 bg-green-100 rounded-lg">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                    </div>
+                    <div class="ml-3 text-sm font-normal">Settings saved successfully!</div>
+                </div>
+            </div>';
+            
+            echo '<script>
+                document.addEventListener("DOMContentLoaded", function() {
+                    const toast = document.getElementById("toast-success");
+                    // Show toast
+                    setTimeout(() => {
+                        toast.classList.remove("opacity-0", "translate-y-full");
+                    }, 100);
+                    // Hide toast
+                    setTimeout(() => {
+                        toast.classList.add("opacity-0", "translate-y-full");
+                        // Remove element after animation
+                        setTimeout(() => {
+                            toast.remove();
+                        }, 3000);
+                    }, 3000);
+                });
+            </script>';
         }
     }
 
@@ -104,8 +126,6 @@ function whatsapp_chat_settings_page() {
     $inquiry_options = get_option('whatsapp_chat_options', array());
     $selected_icon = get_option('whatsapp_chat_icon_style', 'style1');
 
-    // Show settings errors/messages
-    settings_errors('whatsapp_chat_messages');
     ?>
 <div class="wrap">
     <div class="py-6">
@@ -124,7 +144,7 @@ function whatsapp_chat_settings_page() {
             <?php wp_nonce_field('whatsapp_chat_settings', 'whatsapp_chat_nonce'); ?>
             
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <!-- WhatsApp Number Verification Card -->
+                <!-- WhatsApp Number Card -->
                 <div class="lg:col-span-2 bg-white rounded-xl shadow-sm border border-gray-100 p-6">
                     <h3 class="text-xl font-semibold mb-6 text-gray-700 pb-4 border-b">WhatsApp Account</h3>
                     <div class="space-y-4">
@@ -137,41 +157,23 @@ function whatsapp_chat_settings_page() {
                                            name="whatsapp_chat_number" 
                                            value="<?php echo esc_attr($whatsapp_number); ?>" 
                                            class="flex-1 min-w-0 rounded-none rounded-r-md border-gray-300 focus:ring-green-500 focus:border-green-500 h-[35px] text-sm"
-                                           readonly
                                            required>
                                 </div>
                             </div>
-                            <div class="flex space-x-2">
-                                <button type="button" 
-                                        onclick="changeWhatsAppNumber()"
-                                        data-editing="false"
-                                        class="change-whatsapp-btn inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-colors">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                                    </svg>
-                                    Change WhatsApp
-                                </button>
-                                <button type="button" 
-                                        onclick="resendVerificationCode()"
-                                        class="verify-btn inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                                    </svg>
-                                    Resend Code
-                                </button>
-                            </div>
-                        </div>
-                        <?php 
-                        $is_verified = get_option('whatsapp_number_verified', false);
-                        $verification_status = $is_verified ? 
-                            '<span class="text-green-600">✓ Verified</span>' : 
-                            '<span class="text-red-600">✗ Not Verified</span>';
-                        ?>
-                        <div class="text-sm" id="verification-status">
-                            Status: <?php echo wp_kses_post($verification_status); ?>
+                            <button type="submit" 
+                                    name="whatsapp_chat_save" 
+                                    class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors">
+                                Save Number
+                            </button>
                         </div>
                     </div>
                 </div>
+
+                <!-- Original verification code commented out -->
+                <?php /* 
+                    Original WhatsApp Account verification section code here
+                    ... 
+                */ ?>
 
                 <!-- Quick Stats Card -->
                 <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
@@ -190,7 +192,7 @@ function whatsapp_chat_settings_page() {
             </div>
 
             <!-- Settings Container -->
-            <div id="settings-container" class="<?php echo !$is_verified ? 'filter blur-sm pointer-events-none' : ''; ?>">
+            <div id="settings-container">
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     <!-- Basic Settings Card -->
                     <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
@@ -277,8 +279,7 @@ function whatsapp_chat_settings_page() {
             <div class="flex justify-end pt-6">
                 <button type="submit" 
                         name="whatsapp_chat_save" 
-                        class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-lg shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors"
-                        <?php echo !$is_verified ? 'disabled' : ''; ?>>
+                        class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-lg shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors">
                     Save Changes
                 </button>
             </div>
