@@ -19,30 +19,50 @@ define('WAFLOWFUNNEL_VERSION', '1.0');
 
 // Load Assets
 function waflowfunnel_chat_enqueue_assets() {
-    // Load Font Awesome with higher priority
-    wp_enqueue_style(
-        'font-awesome', 
-        plugin_dir_url(__FILE__) . 'assets/css/all.min.css',
-        array(),
-        '6.4.0',
-        'all'
-    );
+    $font_awesome_path = plugin_dir_path(__FILE__) . 'assets/css/all.min.css';
+    $font_awesome_url = plugin_dir_url(__FILE__) . 'assets/css/all.min.css';
+    
+    // Check if Font Awesome file exists before enqueuing
+    if (file_exists($font_awesome_path)) {
+        // Register Font Awesome first
+        wp_register_style(
+            'waflowfunnel-font-awesome', 
+            $font_awesome_url,
+            array(),
+            '6.4.0',
+            'all'
+        );
+        
+        // Then enqueue it with higher priority (lower number)
+        wp_enqueue_style('waflowfunnel-font-awesome');
+    } else {
+        // Log error if file doesn't exist
+        error_log('WhatsApp by FlowFunnel: Font Awesome file not found at ' . $font_awesome_path);
+        
+        // Fallback to CDN version
+        wp_enqueue_style(
+            'waflowfunnel-font-awesome-cdn',
+            'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css',
+            array(),
+            '6.4.0',
+            'all'
+        );
+    }
     
     wp_enqueue_style(
         'whatsapp-tailwind-style', 
         plugin_dir_url(__FILE__) . 'assets/css/style.css',
-        array('font-awesome'), // Make it dependent on Font Awesome
+        array('waflowfunnel-font-awesome'), // Updated dependency name
         filemtime(plugin_dir_path(__FILE__) . 'assets/css/style.css')
     );
 
     wp_enqueue_style(
         'waflowfunnel-style', 
         plugin_dir_url(__FILE__) . 'assets/css/frontend.css',
-        array('font-awesome', 'whatsapp-tailwind-style'), // Update dependencies
+        array('waflowfunnel-font-awesome', 'whatsapp-tailwind-style'), // Updated dependency name
         filemtime(plugin_dir_path(__FILE__) . 'assets/css/frontend.css')
     );
 
-    // Remove Font Awesome JS as it's not needed
     wp_enqueue_script(
         'waflowfunnel-script', 
         plugin_dir_url(__FILE__) . 'assets/js/script.js', 
@@ -50,9 +70,6 @@ function waflowfunnel_chat_enqueue_assets() {
         filemtime(plugin_dir_path(__FILE__) . 'assets/js/script.js'),
         true
     );
-
-    // Remove this line as we don't need Font Awesome JS
-    // wp_enqueue_script('waflowfunnel-fontscript' ...);
 
     wp_localize_script('waflowfunnel-script', 'waflowfunnelData', array(
         'phoneNumber' => get_option('waflowfunnel_chat_number', ''),
@@ -67,18 +84,34 @@ function waflowfunnel_chat_enqueue_admin_assets($hook) {
     if ($hook !== 'settings_page_wa-chat-settings') {
         return;
     }
-    wp_enqueue_style(
-        'font-awesome', 
-        plugin_dir_url(__FILE__) . 'assets/css/all.min.css',
-        array(),
-        '6.4.0',
-        'all'
-    );
+    
+    $font_awesome_path = plugin_dir_path(__FILE__) . 'assets/css/all.min.css';
+    $font_awesome_url = plugin_dir_url(__FILE__) . 'assets/css/all.min.css';
+    
+    // Check if Font Awesome file exists before enqueuing
+    if (file_exists($font_awesome_path)) {
+        wp_enqueue_style(
+            'waflowfunnel-font-awesome', 
+            $font_awesome_url,
+            array(),
+            '6.4.0',
+            'all'
+        );
+    } else {
+        // Fallback to CDN version
+        wp_enqueue_style(
+            'waflowfunnel-font-awesome-cdn',
+            'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css',
+            array(),
+            '6.4.0',
+            'all'
+        );
+    }
     
     wp_enqueue_style(
         'whatsapp-tailwind-style', 
         plugin_dir_url(__FILE__) . 'assets/css/style.css',
-        array('font-awesome'),
+        array('waflowfunnel-font-awesome'), // Updated dependency
         filemtime(plugin_dir_path(__FILE__) . 'assets/css/style.css')
     );
 }
